@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>娱乐玩法计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(145deg, #eef2f9 0%, #dfe7f2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            color: #2a3142;
+        }
+        .app {
+            width: 100%;
+            max-width: 980px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .page {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .page.active {
+            display: flex;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid #cbd5e6;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px -12px rgba(45, 62, 92, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            padding: 22px 26px;
+        }
+        /* ============ 首页 ============ */
+        .home-header {
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .home-header .sub {
+            color: #7c8aa5;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        .home-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 8px 0 14px;
+        }
+        .home-section-title h2 {
+            font-size: 1.12rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #1f2a3d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .home-section-title h2 small {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #7c8aa5;
+            letter-spacing: 0.5px;
+        }
+        .room-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .room-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #f7faff;
+            border: 1.5px solid #d6e0f0;
+            border-radius: 18px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.06);
+        }
+        .room-row:hover {
+            border-color: #9db3d4;
+            background: #eef4ff;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px -8px rgba(60, 90, 140, 0.25);
+        }
+        .room-row-main {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .room-row-name-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1;
+            min-width: 140px;
+        }
+        .room-row-name {
+            font-size: 1.02rem;
+            font-weight: 800;
+            color: #2b3a55;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .room-row-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #5a7090;
+            background: rgba(90, 120, 170, 0.12);
+            border-radius: 8px;
+            padding: 3px 9px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .room-row-info {
+            display: flex;
+            gap: 10px;
+            font-size: 0.78rem;
+            color: #7c8aa5;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .room-row-info span {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            white-space: nowrap;
+        }
+        .room-row-last {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #b8820c;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .room-row-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .mini-btn {
+            border: 1.5px solid #c6d2e4;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: #ffffff;
+            color: #4a5a78;
+            white-space: nowrap;
+        }
+        .mini-btn:hover {
+            background: #eef4ff;
+            border-color: #9db3d4;
+        }
+        .mini-btn.del {
+            border-color: #eccdcd;
+            color: #a33a3a;
+            background: #fff7f7;
+        }
+        .mini-btn.del:hover {
+            background: #ffeeee;
+        }
+        .empty-rooms {
+            color: #8d9bb5;
+            font-size: 0.9rem;
+            padding: 30px 16px;
+            text-align: center;
+            border: 1.5px dashed #dbe3f0;
+            border-radius: 20px;
+        }
+        .home-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 14px;
+        }
+        .tool-btn {
+            border: 1px solid #b7c4d9;
+            border-radius: 14px;
+            padding: 10px 18px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+            background: #ffffff;
+            color: #33405a;
+            box-shadow: 0 3px 0 #c3cfe2, 0 4px 10px rgba(60, 80, 120, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .tool-btn:hover {
+            background: #f3f7ff;
+            border-color: #9fb0cc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 0 #c3cfe2, 0 6px 14px rgba(60, 80, 120, 0.15);
+        }
+        .tool-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #c3cfe2, 0 3px 8px rgba(60, 80, 120, 0.12);
+        }
+        .tool-btn.primary {
+            background: linear-gradient(145deg, #ffd966, #f0b34b);
+            border-color: #e8b04a;
+            color: #3d3216;
+            box-shadow: 0 3px 0 #c9952e, 0 4px 12px rgba(220, 170, 40, 0.3);
+        }
+        .tool-btn.primary:hover {
+            background: linear-gradient(145deg, #ffe082, #f5c05a);
+            box-shadow: 0 4px 0 #c9952e, 0 6px 16px rgba(220, 170, 40, 0.4);
+        }
+        /* ============ 房间页（计算器） ============ */
+        .room-page-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+        .room-page-topbar .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        .back-btn {
+            border: 1.5px solid #c6d2e4;
+            border-radius: 14px;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #ffffff;
+            color: #4a5a78;
+            box-shadow: 0 3px 0 #d5deec, 0 4px 10px rgba(80, 100, 140, 0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .back-btn:hover {
+            background: #eef4ff;
+            border-color: #9db3d4;
+            transform: translateY(-1px);
+        }
+        .back-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #d5deec, 0 3px 8px rgba(80, 100, 140, 0.1);
+        }
+        .room-title-edit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 0;
+            flex: 1;
+            text-align: center;
+        }
+        .room-title-edit h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1f2a3d;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 280px;
+            text-align: center;
+        }
+        .rename-btn {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: background 0.15s;
+            color: #7c8aa5;
+            flex-shrink: 0;
+        }
+        .rename-btn:hover {
+            background: #e8eefb;
+            color: #4a5a78;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .calculator {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid #cbd5e6;
+            border-radius: 34px;
+            box-shadow: 0 16px 40px -14px rgba(45, 62, 92, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            width: 100%;
+            padding: 30px 28px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .title .sub {
+            color: #7c8aa5;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #d6deeb;
+            padding-bottom: 14px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px 18px;
+            margin: 20px 0 12px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6d7b97;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .input-group label span {
+            color: #c78e0c;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+        .input-group input {
+            background: #ffffff;
+            border: 1.5px solid #ccd7e8;
+            border-radius: 16px;
+            padding: 12px 16px;
+            color: #28324a;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.07) inset;
+        }
+        .input-group input:focus {
+            border-color: #e0a800;
+            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.25);
+        }
+        .input-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .input-group input[type="number"]::-webkit-inner-spin-button,
+        .input-group input[type="number"]::-webkit-outer-spin-button {
+            opacity: 0.6;
+            height: 24px;
+        }
+        .result-area {
+            margin: 24px 0 18px;
+            background: #f7faff;
+            border-radius: 24px;
+            padding: 20px 24px;
+            border: 1.5px solid #d6e0f0;
+            box-shadow: 0 4px 14px rgba(90, 110, 150, 0.08) inset;
+        }
+        .current-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            color: #65748f;
+            font-size: 0.88rem;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .formula-hint {
+            font-size: 0.72rem;
+            color: #9aa8c0;
+        }
+        .big-number {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-align: center;
+            word-break: break-word;
+            background: linear-gradient(180deg, #e0a800, #c98a00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(200, 150, 20, 0.2));
+        }
+        .big-number span {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #8b98b3;
+            -webkit-text-fill-color: #8b98b3;
+            margin-left: 6px;
+        }
+        .last-calc {
+            color: #7c8aa5;
+            font-size: 0.84rem;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px dashed #d6e0f0;
+            margin-top: 14px;
+            padding-top: 14px;
+        }
+        .last-calc span {
+            color: #b8820c;
+            font-weight: 700;
+        }
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            border: none;
+            border-radius: 50px;
+            padding: 15px 20px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s, background 0.2s;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-width: 130px;
+        }
+        .btn-primary {
+            background: linear-gradient(145deg, #ffd966, #f0b34b);
+            color: #3d3216;
+            box-shadow: 0 5px 0 #c9952e, 0 6px 16px rgba(220, 170, 40, 0.3);
+            border: 1px solid #ffe28c;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(145deg, #ffe082, #f5c05a);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #c9952e, 0 8px 20px rgba(220, 170, 40, 0.4);
+        }
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #c9952e, 0 4px 12px rgba(220, 170, 40, 0.3);
+        }
+        .btn-copy {
+            background: #eaf1ff;
+            border: 1.5px solid #a9bfe0;
+            color: #2f4a76;
+            box-shadow: 0 5px 0 #c3d2e8, 0 6px 14px rgba(80, 110, 160, 0.15);
+        }
+        .btn-copy:hover {
+            background: #dfeaff;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0 #c3d2e8, 0 8px 18px rgba(80, 110, 160, 0.2);
+        }
+        .btn-copy:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #c3d2e8, 0 4px 12px rgba(80, 110, 160, 0.15);
+        }
+        .btn-secondary {
+            background: #f1f4fa;
+            border: 1.5px solid #c6d2e4;
+            color: #4a5a78;
+            box-shadow: 0 5px 0 #d5deec, 0 6px 14px rgba(80, 100, 140, 0.12);
+        }
+        .btn-secondary:hover {
+            background: #e8eefb;
+            transform: translateY(-2px);
+        }
+        .btn-secondary:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #d5deec, 0 4px 12px rgba(80, 100, 140, 0.1);
+        }
+        .note {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #98a5bd;
+            margin-top: 16px;
+            letter-spacing: 0.3px;
+            line-height: 1.5;
+        }
+        /* ============ 历史记录 ============ */
+        .history-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .history-header h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #1f2a3d;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .history-header h2 small {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: #7c8aa5;
+            letter-spacing: 0.5px;
+        }
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 340px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .history-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .history-list::-webkit-scrollbar-thumb {
+            background: #c6d2e4;
+            border-radius: 10px;
+        }
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #f6f9ff;
+            border: 1.5px solid #dbe3f0;
+            border-radius: 16px;
+            padding: 12px 16px;
+            transition: all 0.15s;
+            flex-wrap: wrap;
+        }
+        .history-item:hover {
+            border-color: #b7c8e2;
+            background: #eef4ff;
+        }
+        .history-item-main {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            flex: 1;
+            min-width: 0;
+        }
+        .history-index {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: #8fa3c4;
+            border-radius: 10px;
+            padding: 4px 10px;
+            white-space: nowrap;
+        }
+        .history-result {
+            font-weight: 800;
+            color: #b8820c;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+        .history-detail {
+            font-size: 0.78rem;
+            color: #6d7b97;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 380px;
+        }
+        .history-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .mini-btn.restore {
+            border-color: #b8d4b8;
+            color: #2e7d32;
+            background: #f3fbf3;
+        }
+        .mini-btn.restore:hover {
+            background: #e3f5e3;
+        }
+        .empty-history {
+            color: #8d9bb5;
+            font-size: 0.9rem;
+            padding: 16px 4px;
+            text-align: center;
+            border: 1.5px dashed #dbe3f0;
+            border-radius: 16px;
+        }
+        /* ============ 自定义弹窗 ============ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(30, 40, 60, 0.4);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 26px 28px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 20px 50px -10px rgba(20, 30, 50, 0.4);
+            border: 1px solid #dbe3f0;
+            animation: modalIn 0.18s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1f2a3d;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal p {
+            color: #5d6b85;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin-bottom: 4px;
+        }
+        .modal input {
+            width: 100%;
+            background: #f7faff;
+            border: 1.5px solid #ccd7e8;
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: #28324a;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .modal input:focus {
+            border-color: #e0a800;
+            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.25);
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            flex: 1;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 16px;
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .modal-btn.cancel {
+            background: #f1f4fa;
+            border: 1.5px solid #c6d2e4;
+            color: #4a5a78;
+        }
+        .modal-btn.cancel:hover {
+            background: #e8eefb;
+        }
+        .modal-btn.confirm {
+            background: linear-gradient(145deg, #ffd966, #f0b34b);
+            color: #3d3216;
+            border: 1px solid #ffe28c;
+            box-shadow: 0 3px 0 #c9952e;
+        }
+        .modal-btn.confirm:hover {
+            background: linear-gradient(145deg, #ffe082, #f5c05a);
+        }
+        .modal-btn.confirm:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #c9952e;
+        }
+        .modal-btn.danger {
+            background: linear-gradient(145deg, #ff9a9a, #e87070);
+            color: #ffffff;
+            border: 1px solid #ffb8b8;
+            box-shadow: 0 3px 0 #b84a4a;
+        }
+        .modal-btn.danger:hover {
+            background: linear-gradient(145deg, #ffadad, #f07e7e);
+        }
+        .modal-btn.danger:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #b84a4a;
+        }
+        .toast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #2ecc71;
+            color: #fff;
+            text-align: center;
+            border-radius: 30px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 1100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            pointer-events: none;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .toast.error {
+            background-color: #e74c3c;
+        }
+        .toast.warn {
+            background-color: #f39c12;
+        }
+        .inline-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        @media (max-width: 640px) {
+            .calculator { padding: 22px 16px; border-radius: 26px; }
+            .grid { gap: 12px; }
+            .big-number { font-size: 2.3rem; }
+            .btn { padding: 13px 10px; font-size: 0.88rem; min-width: 90px; }
+            .button-row { gap: 8px; }
+            .panel { padding: 18px 16px; border-radius: 22px; }
+            .history-detail { max-width: 160px; }
+            .history-item { padding: 10px 12px; }
+            .room-row { padding: 12px 14px; gap: 10px; }
+            .room-row-info { display: none; }
+            /* 小屏幕隐藏公式提示 */
+            .formula-hint { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app" role="main">
+        <!-- ==================== 首页（房间选择） ==================== -->
+        <div class="page active" id="homePage">
+            <div class="panel">
+                <div class="home-header">
+                    <div class="sub">🏠 请选择历史房间进入，或创建新房间</div>
+                </div>
+
+                <div class="home-section-title">
+                    <h2>
+                        📁 历史房间
+                        <small>点击行进入房间</small>
+                    </h2>
+                </div>
+
+                <div class="room-list" id="roomList"></div>
+
+                <div class="home-actions">
+                    <button class="tool-btn primary" id="homeAddRoomBtn">
+                        <span>➕</span> 创建新房间
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 房间页（计算器） ==================== -->
+        <div class="page" id="roomPage">
+            <!-- 顶栏：返回 + 房间名（居中） -->
+            <div class="panel" style="padding: 16px 22px;">
+                <div class="room-page-topbar">
+                    <button class="back-btn" id="backHomeBtn">
+                        <span>←</span> 返回首页
+                    </button>
+                    <div class="room-title-edit">
+                        <h2 id="currentRoomTitle">房间</h2>
+                        <button class="rename-btn" id="renameRoomBtn" title="重命名房间">✏️</button>
+                    </div>
+                    <div class="topbar-right">
+                        <span class="room-row-badge" id="currentRoomBadge" style="font-size:0.75rem; padding:5px 12px;">0次计算</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计算器 -->
+            <div class="calculator">
+                <div class="grid">
+                    <div class="input-group">
+                        <label>🔫 击杀人头数量 <span>(个)</span></label>
+                        <input type="number" id="killCount" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>💰 带出价值 <span>（w）</span></label>
+                        <input type="number" id="carryValue" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>✨ 小金数量 <span>(个)</span></label>
+                        <input type="number" id="smallGold" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>🔴 小红数量 <span>(个)</span></label>
+                        <input type="number" id="smallRed" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>❤️ 大红数量 <span>(个)</span></label>
+                        <input type="number" id="bigRed" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>💔 撤离失败数量 <span>(次)</span></label>
+                        <input type="number" id="failCount" value="0" min="0" step="1" placeholder="0">
+                    </div>
+                </div>
+
+                <div class="result-area">
+                    <div class="current-label">
+                        <span>📊 当前剩余保底</span>
+                        <span class="formula-hint">公式: 10000 - 击杀*1000 - 带出 + 小金*100 + 小红*500 + 大红*1000 + 失败*300</span>
+                    </div>
+                    <div class="big-number" id="resultDisplay">
+                        10000 <span>保底</span>
+                    </div>
+                    <div class="last-calc">
+                        <span>🕒 上次计算结果</span>
+                        <span id="lastResultDisplay">—</span>
+                    </div>
+                </div>
+
+                <div class="button-row">
+                    <button class="btn btn-primary" id="calcBtn">
+                        <span class="inline-icon">🧮</span> 计算并保存
+                    </button>
+                    <button class="btn btn-copy" id="copyBtn">
+                        <span class="inline-icon">📋</span> 复制计算过程
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <span class="inline-icon">🔄</span> 重置当前
+                    </button>
+                </div>
+                <div class="note">
+                    * 每次“计算并保存”都会在下方生成一条历史记录，可选择任意一条历史继续往下算。
+                </div>
+            </div>
+
+            <!-- 历史记录 -->
+            <div class="panel history-panel">
+                <div class="history-header">
+                    <h2>
+                        📜 历史计算过程
+                        <small>点击「从此步继续」即可从该次结果往下计算</small>
+                    </h2>
+                </div>
+                <div class="history-list" id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义弹窗：重命名 -->
+    <div class="modal-overlay" id="renameModal">
+        <div class="modal">
+            <h3>✏️ 重命名房间</h3>
+            <input type="text" id="renameInput" maxlength="20" placeholder="请输入房间名称（最多20字）">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="renameCancelBtn">取消</button>
+                <button class="modal-btn confirm" id="renameConfirmBtn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义弹窗：确认删除房间 -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <h3>🗑️ 删除房间</h3>
+            <p id="deleteModalText">确定删除该房间吗？</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="deleteCancelBtn">取消</button>
+                <button class="modal-btn danger" id="deleteConfirmBtn">确定删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义弹窗：确认删除历史记录 -->
+    <div class="modal-overlay" id="deleteHistoryModal">
+        <div class="modal">
+            <h3>🗑️ 删除记录</h3>
+            <p>确定删除这条计算记录吗？</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="deleteHistoryCancelBtn">取消</button>
+                <button class="modal-btn danger" id="deleteHistoryConfirmBtn">确定删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 自定义弹窗：确认重置当前房间 -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal">
+            <h3>🔄 重置当前房间</h3>
+            <p id="resetModalText">确定重置该房间吗？将清空输入和延续状态，但历史记录会保留。</p>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="resetCancelBtn">取消</button>
+                <button class="modal-btn confirm" id="resetConfirmBtn">确定重置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轻提示 -->
+    <div id="toast" class="toast">✅ 操作成功</div>
+
+    <script>
+        (function() {
+            // ============ 存储 ============
+            const STORAGE_KEY = 'entertainment_288_rooms_v3';
+            const DEFAULT_ROOM_NAME = '房间1';
+
+            function loadStorage() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (data && Array.isArray(data.rooms) && data.rooms.length > 0) {
+                            return data;
+                        }
+                    }
+                } catch (e) {
+                    console.warn('读取存储失败，使用默认数据', e);
+                }
+                const firstRoom = createEmptyRoom(DEFAULT_ROOM_NAME);
+                return {
+                    rooms: [firstRoom],
+                    currentRoomId: null
+                };
+            }
+
+            function createEmptyRoom(name) {
+                return {
+                    id: 'room_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+                    name: name || '新房间',
+                    inputs: { killCount: 0, carryValue: 0, smallGold: 0, smallRed: 0, bigRed: 0, failCount: 0 },
+                    lastCalculatedValue: null,
+                    lastCalculationSnapshot: null,
+                    lastResult: null,
+                    history: []
+                };
+            }
+
+            function saveStorage(data) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                } catch (e) {
+                    console.error('保存失败', e);
+                    showToast('⚠️ 数据保存失败', 'warn');
+                }
+            }
+
+            // ============ 全局状态 ============
+            let store = loadStorage();
+            if (store.currentRoomId && !store.rooms.some(r => r.id === store.currentRoomId)) {
+                store.currentRoomId = null;
+            }
+
+            let renameTargetRoom = null;
+            let deleteTargetRoom = null;
+            let deleteHistoryTargetId = null;
+
+            // ============ DOM ============
+            const homePage = document.getElementById('homePage');
+            const roomPage = document.getElementById('roomPage');
+
+            const roomList = document.getElementById('roomList');
+            const homeAddRoomBtn = document.getElementById('homeAddRoomBtn');
+
+            const backHomeBtn = document.getElementById('backHomeBtn');
+            const currentRoomTitle = document.getElementById('currentRoomTitle');
+            const currentRoomBadge = document.getElementById('currentRoomBadge');
+            const renameRoomBtn = document.getElementById('renameRoomBtn');
+
+            const killInput = document.getElementById('killCount');
+            const carryInput = document.getElementById('carryValue');
+            const smallGoldInput = document.getElementById('smallGold');
+            const smallRedInput = document.getElementById('smallRed');
+            const bigRedInput = document.getElementById('bigRed');
+            const failInput = document.getElementById('failCount');
+
+            const resultDisplay = document.getElementById('resultDisplay');
+            const lastResultDisplay = document.getElementById('lastResultDisplay');
+            const historyList = document.getElementById('historyList');
+            const toastEl = document.getElementById('toast');
+
+            const calcBtn = document.getElementById('calcBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            // 重命名弹窗
+            const renameModal = document.getElementById('renameModal');
+            const renameInput = document.getElementById('renameInput');
+            const renameCancelBtn = document.getElementById('renameCancelBtn');
+            const renameConfirmBtn = document.getElementById('renameConfirmBtn');
+
+            // 删除房间弹窗
+            const deleteModal = document.getElementById('deleteModal');
+            const deleteModalText = document.getElementById('deleteModalText');
+            const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+            const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+
+            // 删除历史记录弹窗
+            const deleteHistoryModal = document.getElementById('deleteHistoryModal');
+            const deleteHistoryCancelBtn = document.getElementById('deleteHistoryCancelBtn');
+            const deleteHistoryConfirmBtn = document.getElementById('deleteHistoryConfirmBtn');
+
+            // 重置弹窗
+            const resetModal = document.getElementById('resetModal');
+            const resetModalText = document.getElementById('resetModalText');
+            const resetCancelBtn = document.getElementById('resetCancelBtn');
+            const resetConfirmBtn = document.getElementById('resetConfirmBtn');
+
+            const allInputs = [killInput, carryInput, smallGoldInput, smallRedInput, bigRedInput, failInput];
+
+            // ============ 辅助 ============
+            function getCurrentRoom() {
+                if (!store.currentRoomId) return null;
+                return store.rooms.find(r => r.id === store.currentRoomId) || null;
+            }
+            function getNumberFromInput(inputEl) {
+                const val = parseFloat(inputEl.value);
+                return isNaN(val) ? 0 : val;
+            }
+            function showToast(message, type = '') {
+                toastEl.textContent = message;
+                toastEl.className = 'toast show' + (type ? ' ' + type : '');
+                clearTimeout(toastEl._timer);
+                toastEl._timer = setTimeout(() => { toastEl.className = 'toast'; }, 2200);
+            }
+            async function copyToClipboard(text) {
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(text);
+                    } else {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = text;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                    }
+                    showToast('✅ 计算过程已复制！');
+                } catch (err) {
+                    try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = text;
+                        textarea.style.position = 'fixed';
+                        textarea.style.opacity = '0';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        showToast('✅ 计算过程已复制！');
+                    } catch (e) {
+                        showToast('❌ 复制失败，请手动复制', 'error');
+                    }
+                }
+            }
+            function formatTime(ts) {
+                const d = new Date(ts);
+                const pad = (n) => String(n).padStart(2, '0');
+                return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+            }
+
+            // ============ 页面切换 ============
+            function showHomePage() {
+                store.currentRoomId = null;
+                saveStorage(store);
+                homePage.classList.add('active');
+                roomPage.classList.remove('active');
+                renderHomePage();
+            }
+
+            function enterRoomPage(roomId) {
+                const room = store.rooms.find(r => r.id === roomId);
+                if (!room) { showToast('房间不存在', 'error'); return; }
+                store.currentRoomId = roomId;
+                saveStorage(store);
+
+                homePage.classList.remove('active');
+                roomPage.classList.add('active');
+
+                refreshRoomPage();
+            }
+
+            // ============ 首页列表渲染 ============
+            function renderHomePage() {
+                roomList.innerHTML = '';
+
+                if (store.rooms.length === 0) {
+                    roomList.innerHTML = '<div class="empty-rooms">暂无房间，点击下方按钮创建新房间</div>';
+                    return;
+                }
+
+                store.rooms.forEach(room => {
+                    const row = document.createElement('div');
+                    row.className = 'room-row';
+
+                    const main = document.createElement('div');
+                    main.className = 'room-row-main';
+
+                    const nameWrap = document.createElement('div');
+                    nameWrap.className = 'room-row-name-wrap';
+
+                    const nameEl = document.createElement('span');
+                    nameEl.className = 'room-row-name';
+                    nameEl.textContent = room.name;
+                    nameEl.title = room.name;
+
+                    const badge = document.createElement('span');
+                    badge.className = 'room-row-badge';
+                    badge.textContent = `${room.history.length}次`;
+
+                    nameWrap.appendChild(nameEl);
+                    nameWrap.appendChild(badge);
+
+                    const info = document.createElement('div');
+                    info.className = 'room-row-info';
+                    info.innerHTML = `<span>🔫 ${room.inputs.killCount ?? 0}</span>
+                                      <span>💰 ${room.inputs.carryValue ?? 0}</span>
+                                      <span>✨ ${room.inputs.smallGold ?? 0}</span>
+                                      <span>🔴 ${room.inputs.smallRed ?? 0}</span>
+                                      <span>❤️ ${room.inputs.bigRed ?? 0}</span>
+                                      <span>💔 ${room.inputs.failCount ?? 0}</span>`;
+
+                    main.appendChild(nameWrap);
+                    main.appendChild(info);
+
+                    const lastEl = document.createElement('div');
+                    lastEl.className = 'room-row-last';
+                    if (room.lastCalculatedValue !== null && room.lastCalculatedValue !== undefined) {
+                        lastEl.textContent = `当前 ${room.lastCalculatedValue}`;
+                    } else {
+                        lastEl.textContent = `当前 10000`;
+                    }
+
+                    const actions = document.createElement('div');
+                    actions.className = 'room-row-actions';
+
+                    const renameBtn = document.createElement('button');
+                    renameBtn.className = 'mini-btn';
+                    renameBtn.textContent = '✏️';
+                    renameBtn.title = '重命名';
+                    renameBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openRenameModal(room);
+                    });
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'mini-btn del';
+                    delBtn.textContent = '🗑️';
+                    delBtn.title = '删除房间';
+                    delBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openDeleteModal(room);
+                    });
+
+                    actions.appendChild(renameBtn);
+                    actions.appendChild(delBtn);
+
+                    row.appendChild(main);
+                    row.appendChild(lastEl);
+                    row.appendChild(actions);
+
+                    row.addEventListener('click', () => {
+                        enterRoomPage(room.id);
+                    });
+
+                    roomList.appendChild(row);
+                });
+            }
+
+            // ============ 重命名弹窗 ============
+            function openRenameModal(room) {
+                renameTargetRoom = room;
+                renameInput.value = room.name;
+                renameModal.classList.add('show');
+                setTimeout(() => {
+                    renameInput.focus();
+                    renameInput.select();
+                }, 50);
+            }
+
+            function closeRenameModal() {
+                renameModal.classList.remove('show');
+                renameTargetRoom = null;
+            }
+
+            function confirmRename() {
+                if (!renameTargetRoom) return;
+                const trimmed = renameInput.value.trim();
+                if (!trimmed) { showToast('⚠️ 名称不能为空', 'warn'); return; }
+                if (trimmed.length > 20) { showToast('⚠️ 名称最多20个字符', 'warn'); return; }
+
+                const room = renameTargetRoom;
+                room.name = trimmed;
+                saveStorage(store);
+
+                if (store.currentRoomId === room.id) {
+                    currentRoomTitle.textContent = trimmed;
+                }
+
+                closeRenameModal();
+                renderHomePage();
+                showToast(`✏️ 已重命名为「${trimmed}」`);
+            }
+
+            renameCancelBtn.addEventListener('click', closeRenameModal);
+            renameConfirmBtn.addEventListener('click', confirmRename);
+            renameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); confirmRename(); }
+                if (e.key === 'Escape') { closeRenameModal(); }
+            });
+            renameModal.addEventListener('click', (e) => {
+                if (e.target === renameModal) closeRenameModal();
+            });
+
+            // ============ 删除房间弹窗 ============
+            function openDeleteModal(room) {
+                deleteTargetRoom = room;
+                deleteModalText.textContent = `确定删除「${room.name}」吗？该房间的所有计算记录将永久丢失，此操作不可撤销。`;
+                deleteModal.classList.add('show');
+            }
+
+            function closeDeleteModal() {
+                deleteModal.classList.remove('show');
+                deleteTargetRoom = null;
+            }
+
+            function confirmDelete() {
+                if (!deleteTargetRoom) return;
+                const room = deleteTargetRoom;
+                const idx = store.rooms.findIndex(r => r.id === room.id);
+                if (idx === -1) { closeDeleteModal(); return; }
+                store.rooms.splice(idx, 1);
+                if (store.currentRoomId === room.id) {
+                    store.currentRoomId = null;
+                }
+                saveStorage(store);
+                closeDeleteModal();
+                if (roomPage.classList.contains('active') && !getCurrentRoom()) {
+                    showHomePage();
+                } else {
+                    renderHomePage();
+                }
+                showToast(`🗑️ 已删除：${room.name}`);
+            }
+
+            deleteCancelBtn.addEventListener('click', closeDeleteModal);
+            deleteConfirmBtn.addEventListener('click', confirmDelete);
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) closeDeleteModal();
+            });
+
+            // ============ 删除历史记录弹窗 ============
+            function openDeleteHistoryModal(historyId) {
+                deleteHistoryTargetId = historyId;
+                deleteHistoryModal.classList.add('show');
+            }
+
+            function closeDeleteHistoryModal() {
+                deleteHistoryModal.classList.remove('show');
+                deleteHistoryTargetId = null;
+            }
+
+            function confirmDeleteHistory() {
+                if (!deleteHistoryTargetId) return;
+                const room = getCurrentRoom();
+                if (!room) { closeDeleteHistoryModal(); return; }
+                const idx = room.history.findIndex(h => h.id === deleteHistoryTargetId);
+                if (idx === -1) { closeDeleteHistoryModal(); return; }
+                room.history.splice(idx, 1);
+                saveStorage(store);
+                closeDeleteHistoryModal();
+                refreshRoomPage();
+                showToast('🗑️ 历史记录已删除');
+            }
+
+            deleteHistoryCancelBtn.addEventListener('click', closeDeleteHistoryModal);
+            deleteHistoryConfirmBtn.addEventListener('click', confirmDeleteHistory);
+            deleteHistoryModal.addEventListener('click', (e) => {
+                if (e.target === deleteHistoryModal) closeDeleteHistoryModal();
+            });
+
+            // ============ 重置当前房间弹窗 ============
+            function openResetModal() {
+                const room = getCurrentRoom();
+                if (!room) return;
+                resetModalText.textContent = `确定重置「${room.name}」吗？将清空输入和延续状态，但历史记录会保留。`;
+                resetModal.classList.add('show');
+            }
+
+            function closeResetModal() {
+                resetModal.classList.remove('show');
+            }
+
+            function confirmReset() {
+                const room = getCurrentRoom();
+                if (!room) { closeResetModal(); return; }
+                room.inputs = { killCount:0, carryValue:0, smallGold:0, smallRed:0, bigRed:0, failCount:0 };
+                room.lastCalculatedValue = null;
+                room.lastResult = null;
+                room.lastCalculationSnapshot = null;
+                saveStorage(store);
+                closeResetModal();
+                refreshRoomPage();
+                showToast(`🔄 ${room.name} 已重置（历史保留）`);
+            }
+
+            resetCancelBtn.addEventListener('click', closeResetModal);
+            resetConfirmBtn.addEventListener('click', confirmReset);
+            resetModal.addEventListener('click', (e) => {
+                if (e.target === resetModal) closeResetModal();
+            });
+
+            // ============ 创建新房间 ============
+            function createNewRoomAndEnter() {
+                let num = store.rooms.length + 1;
+                let name = `房间${num}`;
+                while (store.rooms.some(r => r.name === name)) { num++; name = `房间${num}`; }
+                const newRoom = createEmptyRoom(name);
+                store.rooms.push(newRoom);
+                saveStorage(store);
+                showToast(`➕ 已创建：${name}`);
+                renderHomePage();
+                enterRoomPage(newRoom.id);
+            }
+
+            // ============ 房间页刷新 ============
+            function refreshRoomPage() {
+                const room = getCurrentRoom();
+                if (!room) {
+                    showHomePage();
+                    return;
+                }
+
+                currentRoomTitle.textContent = room.name;
+                currentRoomBadge.textContent = `${room.history.length}次计算`;
+
+                killInput.value = room.inputs.killCount ?? 0;
+                carryInput.value = room.inputs.carryValue ?? 0;
+                smallGoldInput.value = room.inputs.smallGold ?? 0;
+                smallRedInput.value = room.inputs.smallRed ?? 0;
+                bigRedInput.value = room.inputs.bigRed ?? 0;
+                failInput.value = room.inputs.failCount ?? 0;
+
+                const previewValue = computePreviewValue(room);
+                resultDisplay.innerHTML = `${previewValue} <span>保底</span>`;
+
+                if (room.lastCalculatedValue !== null && room.lastCalculatedValue !== undefined) {
+                    lastResultDisplay.textContent = room.lastCalculatedValue;
+                } else {
+                    lastResultDisplay.textContent = '—';
+                }
+
+                renderHistory(room);
+            }
+
+            function computePreviewValue(room) {
+                const inputs = room.inputs;
+                const delta = - (inputs.killCount || 0) * 1000
+                            - (inputs.carryValue || 0)
+                            + (inputs.smallGold || 0) * 100
+                            + (inputs.smallRed || 0) * 500
+                            + (inputs.bigRed || 0) * 1000
+                            + (inputs.failCount || 0) * 300;
+                let value;
+                if (room.lastCalculatedValue === null || room.lastCalculatedValue === undefined) {
+                    value = 10000 + delta;
+                } else {
+                    value = room.lastCalculatedValue + delta;
+                }
+                return Math.round(value * 100) / 100;
+            }
+
+            // ============ 历史渲染 ============
+            function renderHistory(room) {
+                historyList.innerHTML = '';
+
+                if (!room.history || room.history.length === 0) {
+                    historyList.innerHTML = '<div class="empty-history">暂无计算记录，点击「计算并保存」生成第一条记录</div>';
+                    return;
+                }
+
+                const reversed = [...room.history].reverse();
+                reversed.forEach((item, idx) => {
+                    const realIndex = room.history.length - idx;
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'history-item';
+
+                    const main = document.createElement('div');
+                    main.className = 'history-item-main';
+
+                    const indexEl = document.createElement('span');
+                    indexEl.className = 'history-index';
+                    indexEl.textContent = `第 ${realIndex} 次`;
+
+                    const resultEl = document.createElement('span');
+                    resultEl.className = 'history-result';
+                    resultEl.textContent = `${item.finalValue} 保底`;
+
+                    const detailEl = document.createElement('span');
+                    detailEl.className = 'history-detail';
+                    const inp = item.inputs;
+                    detailEl.textContent = `击杀${inp.killCount} · 带出${inp.carryValue} · 小金${inp.smallGold} · 小红${inp.smallRed} · 大红${inp.bigRed} · 失败${inp.failCount} · ${formatTime(item.timestamp)}`;
+                    detailEl.title = detailEl.textContent;
+
+                    main.appendChild(indexEl);
+                    main.appendChild(resultEl);
+                    main.appendChild(detailEl);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'history-actions';
+
+                    const continueBtn = document.createElement('button');
+                    continueBtn.className = 'mini-btn restore';
+                    continueBtn.textContent = '⏪ 从此步继续';
+                    continueBtn.title = '将该次计算结果作为当前延续基数，重新往下计算';
+                    continueBtn.addEventListener('click', () => {
+                        restoreFromHistory(item);
+                    });
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'mini-btn del';
+                    delBtn.textContent = '✕';
+                    delBtn.title = '删除这条记录';
+                    delBtn.addEventListener('click', () => {
+                        openDeleteHistoryModal(item.id);
+                    });
+
+                    actions.appendChild(continueBtn);
+                    actions.appendChild(delBtn);
+
+                    itemEl.appendChild(main);
+                    itemEl.appendChild(actions);
+                    historyList.appendChild(itemEl);
+                });
+            }
+
+            // ============ 执行计算 ============
+            function performCalculation() {
+                const room = getCurrentRoom();
+                if (!room) return;
+
+                allInputs.forEach(inp => {
+                    let val = parseFloat(inp.value);
+                    if (isNaN(val) || val < 0) inp.value = '0';
+                    else if (inp.value === '') inp.value = '0';
+                });
+
+                room.inputs.killCount = getNumberFromInput(killInput);
+                room.inputs.carryValue = getNumberFromInput(carryInput);
+                room.inputs.smallGold = getNumberFromInput(smallGoldInput);
+                room.inputs.smallRed = getNumberFromInput(smallRedInput);
+                room.inputs.bigRed = getNumberFromInput(bigRedInput);
+                room.inputs.failCount = getNumberFromInput(failInput);
+
+                const inputs = { ...room.inputs };
+                const delta = - inputs.killCount * 1000
+                            - inputs.carryValue
+                            + inputs.smallGold * 100
+                            + inputs.smallRed * 500
+                            + inputs.bigRed * 1000
+                            + inputs.failCount * 300;
+
+                let baseValue, finalValue, isFirst;
+                if (room.lastCalculatedValue === null || room.lastCalculatedValue === undefined) {
+                    baseValue = 10000;
+                    finalValue = 10000 + delta;
+                    isFirst = true;
+                } else {
+                    baseValue = room.lastCalculatedValue;
+                    finalValue = room.lastCalculatedValue + delta;
+                    isFirst = false;
+                }
+                finalValue = Math.round(finalValue * 100) / 100;
+
+                // 构建计算过程文本
+                const sign = (n) => n >= 0 ? `+ ${n}` : `- ${Math.abs(n)}`;
+                let processText = `【娱乐体验玩法 · 本次计算】\n`;
+                processText += `--------------------------------\n`;
+                processText += `  击杀人头：${inputs.killCount} 个\n`;
+                processText += `  带出价值：${inputs.carryValue} w\n`;
+                processText += `  小金：${inputs.smallGold} 个\n`;
+                processText += `  小红：${inputs.smallRed} 个\n`;
+                processText += `  大红：${inputs.bigRed} 个\n`;
+                processText += `  撤离失败：${inputs.failCount} 次\n`;
+                processText += `--------------------------------\n`;
+                if (isFirst) {
+                    processText += `  剩余保底 = 10000 ${sign(-inputs.killCount * 1000)} ${sign(-inputs.carryValue)} ${sign(inputs.smallGold * 100)} ${sign(inputs.smallRed * 500)} ${sign(inputs.bigRed * 1000)} ${sign(inputs.failCount * 300)}\n`;
+                } else {
+                    processText += `  上次剩余保底：${baseValue}\n`;
+                    processText += `  本次变化量 = ${sign(-inputs.killCount * 1000)} ${sign(-inputs.carryValue)} ${sign(inputs.smallGold * 100)} ${sign(inputs.smallRed * 500)} ${sign(inputs.bigRed * 1000)} ${sign(inputs.failCount * 300)}\n`;
+                    processText += `  剩余保底 = ${baseValue} + (${delta >= 0 ? '+' : ''}${delta})\n`;
+                }
+                processText += `--------------------------------\n`;
+                processText += `✅ 计算结果：${finalValue} w\n`;
+
+                const historyItem = {
+                    id: 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+                    timestamp: Date.now(),
+                    inputs: { ...inputs },
+                    baseValue, delta, finalValue, processText
+                };
+
+                room.history.push(historyItem);
+                room.lastCalculatedValue = finalValue;
+                room.lastResult = finalValue;
+                room.lastCalculationSnapshot = processText;
+
+                saveStorage(store);
+                refreshRoomPage();
+
+                showToast(`✅ ${room.name} 第 ${room.history.length} 次计算：${finalValue} 保底`);
+            }
+
+            // ============ 从历史恢复 ============
+            function restoreFromHistory(historyItem) {
+                const room = getCurrentRoom();
+                if (!room) return;
+
+                const inp = historyItem.inputs;
+                killInput.value = inp.killCount;
+                carryInput.value = inp.carryValue;
+                smallGoldInput.value = inp.smallGold;
+                smallRedInput.value = inp.smallRed;
+                bigRedInput.value = inp.bigRed;
+                failInput.value = inp.failCount;
+
+                room.lastCalculatedValue = historyItem.finalValue;
+                room.inputs = { ...inp };
+                room.lastCalculationSnapshot = historyItem.processText;
+
+                saveStorage(store);
+                refreshRoomPage();
+
+                showToast(`⏪ 已回到第 ${room.history.indexOf(historyItem) + 1} 次结果 (${historyItem.finalValue})，可继续计算`);
+            }
+
+            // ============ 复制 ============
+            function copyCurrentProcess() {
+                const room = getCurrentRoom();
+                if (!room) return;
+                if (!room.lastCalculationSnapshot) {
+                    showToast('⚠️ 请先进行一次计算', 'warn');
+                    return;
+                }
+                copyToClipboard(room.lastCalculationSnapshot);
+            }
+
+            // ============ 事件绑定 ============
+            homeAddRoomBtn.addEventListener('click', createNewRoomAndEnter);
+            backHomeBtn.addEventListener('click', showHomePage);
+            renameRoomBtn.addEventListener('click', () => {
+                const room = getCurrentRoom();
+                if (room) openRenameModal(room);
+            });
+
+            calcBtn.addEventListener('click', performCalculation);
+            resetBtn.addEventListener('click', openResetModal);
+            copyBtn.addEventListener('click', copyCurrentProcess);
+
+            allInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const room = getCurrentRoom();
+                    if (!room) return;
+                    const tempInputs = {
+                        killCount: getNumberFromInput(killInput),
+                        carryValue: getNumberFromInput(carryInput),
+                        smallGold: getNumberFromInput(smallGoldInput),
+                        smallRed: getNumberFromInput(smallRedInput),
+                        bigRed: getNumberFromInput(bigRedInput),
+                        failCount: getNumberFromInput(failInput)
+                    };
+                    const delta = - tempInputs.killCount * 1000
+                                - tempInputs.carryValue
+                                + tempInputs.smallGold * 100
+                                + tempInputs.smallRed * 500
+                                + tempInputs.bigRed * 1000
+                                + tempInputs.failCount * 300;
+                    let previewValue;
+                    if (room.lastCalculatedValue === null || room.lastCalculatedValue === undefined) {
+                        previewValue = 10000 + delta;
+                    } else {
+                        previewValue = room.lastCalculatedValue + delta;
+                    }
+                    previewValue = Math.round(previewValue * 100) / 100;
+                    resultDisplay.innerHTML = `${previewValue} <span>保底</span>`;
+                    room.inputs = tempInputs;
+                });
+
+                input.addEventListener('blur', function() {
+                    if (this.value === '' || parseFloat(this.value) < 0) this.value = '0';
+                    const room = getCurrentRoom();
+                    if (room) {
+                        room.inputs.killCount = getNumberFromInput(killInput);
+                        room.inputs.carryValue = getNumberFromInput(carryInput);
+                        room.inputs.smallGold = getNumberFromInput(smallGoldInput);
+                        room.inputs.smallRed = getNumberFromInput(smallRedInput);
+                        room.inputs.bigRed = getNumberFromInput(bigRedInput);
+                        room.inputs.failCount = getNumberFromInput(failInput);
+                        saveStorage(store);
+                        refreshRoomPage();
+                    }
+                });
+            });
+
+            // ============ 初始化 ============
+            function init() {
+                store.rooms.forEach(room => {
+                    if (!Array.isArray(room.history)) room.history = [];
+                });
+                if (store.rooms.length === 0) {
+                    const r = createEmptyRoom(DEFAULT_ROOM_NAME);
+                    store.rooms.push(r);
+                }
+                store.currentRoomId = null;
+                saveStorage(store);
+                renderHomePage();
+            }
+            init();
+        })();
+    </script>
+</body>
+</html>
