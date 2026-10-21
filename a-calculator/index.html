@@ -12,7 +12,7 @@
             padding: 0;
         }
         body {
-            background: linear-gradient(145deg, #eef2f9 0%, #dfe7f2 100%);
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -36,11 +36,10 @@
             display: flex;
         }
         .panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid #cbd5e6;
+            background: #ffffff;
+            border: 1px solid #e0e6f0;
             border-radius: 28px;
-            box-shadow: 0 12px 30px -12px rgba(45, 62, 92, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            box-shadow: 0 8px 24px -12px rgba(45, 62, 92, 0.15);
             padding: 22px 26px;
         }
         /* ============ 首页 ============ */
@@ -86,19 +85,19 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            background: #f7faff;
-            border: 1.5px solid #d6e0f0;
+            background: #ffffff;
+            border: 1.5px solid #e0e6f0;
             border-radius: 18px;
             padding: 14px 18px;
             cursor: pointer;
             transition: all 0.15s;
-            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.06);
+            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.04);
         }
         .room-row:hover {
-            border-color: #9db3d4;
-            background: #eef4ff;
+            border-color: #b7c8e2;
+            background: #f8fbff;
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px -8px rgba(60, 90, 140, 0.25);
+            box-shadow: 0 8px 20px -8px rgba(60, 90, 140, 0.2);
         }
         .room-row-main {
             display: flex;
@@ -161,7 +160,7 @@
             flex-shrink: 0;
         }
         .mini-btn {
-            border: 1.5px solid #c6d2e4;
+            border: 1.5px solid #d0dae8;
             border-radius: 10px;
             padding: 6px 12px;
             font-size: 0.75rem;
@@ -173,23 +172,23 @@
             white-space: nowrap;
         }
         .mini-btn:hover {
-            background: #eef4ff;
+            background: #f0f6ff;
             border-color: #9db3d4;
         }
         .mini-btn.del {
-            border-color: #eccdcd;
+            border-color: #f0d5d5;
             color: #a33a3a;
-            background: #fff7f7;
+            background: #ffffff;
         }
         .mini-btn.del:hover {
-            background: #ffeeee;
+            background: #fff5f5;
         }
         .empty-rooms {
             color: #8d9bb5;
             font-size: 0.9rem;
             padding: 30px 16px;
             text-align: center;
-            border: 1.5px dashed #dbe3f0;
+            border: 1.5px dashed #e0e6f0;
             border-radius: 20px;
         }
         .home-actions {
@@ -198,7 +197,7 @@
             margin-top: 14px;
         }
         .tool-btn {
-            border: 1px solid #b7c4d9;
+            border: 1px solid #d0dae8;
             border-radius: 14px;
             padding: 10px 18px;
             font-size: 0.88rem;
@@ -207,31 +206,31 @@
             transition: transform 0.1s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
             background: #ffffff;
             color: #33405a;
-            box-shadow: 0 3px 0 #c3cfe2, 0 4px 10px rgba(60, 80, 120, 0.1);
+            box-shadow: 0 3px 0 #e3e9f2, 0 4px 10px rgba(60, 80, 120, 0.06);
             display: inline-flex;
             align-items: center;
             gap: 6px;
             white-space: nowrap;
         }
         .tool-btn:hover {
-            background: #f3f7ff;
+            background: #f8fbff;
             border-color: #9fb0cc;
             transform: translateY(-1px);
-            box-shadow: 0 4px 0 #c3cfe2, 0 6px 14px rgba(60, 80, 120, 0.15);
+            box-shadow: 0 4px 0 #e3e9f2, 0 6px 14px rgba(60, 80, 120, 0.1);
         }
         .tool-btn:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 #c3cfe2, 0 3px 8px rgba(60, 80, 120, 0.12);
+            box-shadow: 0 1px 0 #e3e9f2, 0 3px 8px rgba(60, 80, 120, 0.08);
         }
         .tool-btn.primary {
             background: linear-gradient(145deg, #ffd966, #f0b34b);
             border-color: #e8b04a;
             color: #3d3216;
-            box-shadow: 0 3px 0 #c9952e, 0 4px 12px rgba(220, 170, 40, 0.3);
+            box-shadow: 0 3px 0 #d9b35a, 0 4px 12px rgba(220, 170, 40, 0.25);
         }
         .tool-btn.primary:hover {
             background: linear-gradient(145deg, #ffe082, #f5c05a);
-            box-shadow: 0 4px 0 #c9952e, 0 6px 16px rgba(220, 170, 40, 0.4);
+            box-shadow: 0 4px 0 #d9b35a, 0 6px 16px rgba(220, 170, 40, 0.3);
         }
         /* ============ 房间页（计算器） ============ */
         .room-page-topbar {
@@ -250,7 +249,7 @@
             flex-wrap: wrap;
         }
         .back-btn {
-            border: 1.5px solid #c6d2e4;
+            border: 1.5px solid #d0dae8;
             border-radius: 14px;
             padding: 8px 14px;
             font-size: 0.85rem;
@@ -258,7 +257,7 @@
             cursor: pointer;
             background: #ffffff;
             color: #4a5a78;
-            box-shadow: 0 3px 0 #d5deec, 0 4px 10px rgba(80, 100, 140, 0.1);
+            box-shadow: 0 3px 0 #e3e9f2, 0 4px 10px rgba(80, 100, 140, 0.06);
             display: inline-flex;
             align-items: center;
             gap: 5px;
@@ -266,13 +265,13 @@
             transition: all 0.15s;
         }
         .back-btn:hover {
-            background: #eef4ff;
+            background: #f8fbff;
             border-color: #9db3d4;
             transform: translateY(-1px);
         }
         .back-btn:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 #d5deec, 0 3px 8px rgba(80, 100, 140, 0.1);
+            box-shadow: 0 1px 0 #e3e9f2, 0 3px 8px rgba(80, 100, 140, 0.08);
         }
         .room-title-edit {
             display: flex;
@@ -305,7 +304,7 @@
             flex-shrink: 0;
         }
         .rename-btn:hover {
-            background: #e8eefb;
+            background: #f0f6ff;
             color: #4a5a78;
         }
         .topbar-right {
@@ -315,25 +314,12 @@
             flex-shrink: 0;
         }
         .calculator {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border: 1px solid #cbd5e6;
+            background: #ffffff;
+            border: 1px solid #e0e6f0;
             border-radius: 34px;
-            box-shadow: 0 16px 40px -14px rgba(45, 62, 92, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            box-shadow: 0 12px 32px -14px rgba(45, 62, 92, 0.15);
             width: 100%;
             padding: 30px 28px;
-        }
-        .title {
-            text-align: center;
-            margin-bottom: 18px;
-        }
-        .title .sub {
-            color: #7c8aa5;
-            font-size: 0.82rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-bottom: 1px dashed #d6deeb;
-            padding-bottom: 14px;
         }
         .grid {
             display: grid;
@@ -362,7 +348,7 @@
         }
         .input-group input {
             background: #ffffff;
-            border: 1.5px solid #ccd7e8;
+            border: 1.5px solid #d9e2ef;
             border-radius: 16px;
             padding: 12px 16px;
             color: #28324a;
@@ -371,11 +357,11 @@
             outline: none;
             transition: border 0.2s, box-shadow 0.2s;
             width: 100%;
-            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.07) inset;
+            box-shadow: 0 2px 6px rgba(90, 110, 150, 0.04) inset;
         }
         .input-group input:focus {
             border-color: #e0a800;
-            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.25);
+            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.2);
         }
         .input-group input[type="number"] {
             -moz-appearance: textfield;
@@ -387,11 +373,11 @@
         }
         .result-area {
             margin: 24px 0 18px;
-            background: #f7faff;
+            background: #ffffff;
             border-radius: 24px;
             padding: 20px 24px;
-            border: 1.5px solid #d6e0f0;
-            box-shadow: 0 4px 14px rgba(90, 110, 150, 0.08) inset;
+            border: 1.5px solid #e0e6f0;
+            box-shadow: 0 4px 14px rgba(90, 110, 150, 0.04) inset;
         }
         .current-label {
             display: flex;
@@ -418,7 +404,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(200, 150, 20, 0.2));
+            filter: drop-shadow(0 2px 4px rgba(200, 150, 20, 0.15));
         }
         .big-number span {
             font-size: 1.15rem;
@@ -432,7 +418,7 @@
             font-size: 0.84rem;
             display: flex;
             justify-content: space-between;
-            border-top: 1px dashed #d6e0f0;
+            border-top: 1px dashed #e0e6f0;
             margin-top: 14px;
             padding-top: 14px;
         }
@@ -465,46 +451,46 @@
         .btn-primary {
             background: linear-gradient(145deg, #ffd966, #f0b34b);
             color: #3d3216;
-            box-shadow: 0 5px 0 #c9952e, 0 6px 16px rgba(220, 170, 40, 0.3);
+            box-shadow: 0 5px 0 #d9b35a, 0 6px 16px rgba(220, 170, 40, 0.25);
             border: 1px solid #ffe28c;
         }
         .btn-primary:hover {
             background: linear-gradient(145deg, #ffe082, #f5c05a);
             transform: translateY(-2px);
-            box-shadow: 0 7px 0 #c9952e, 0 8px 20px rgba(220, 170, 40, 0.4);
+            box-shadow: 0 7px 0 #d9b35a, 0 8px 20px rgba(220, 170, 40, 0.3);
         }
         .btn-primary:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #c9952e, 0 4px 12px rgba(220, 170, 40, 0.3);
+            box-shadow: 0 1px 0 #d9b35a, 0 4px 12px rgba(220, 170, 40, 0.25);
         }
         .btn-copy {
-            background: #eaf1ff;
-            border: 1.5px solid #a9bfe0;
+            background: #f0f6ff;
+            border: 1.5px solid #c0d4ec;
             color: #2f4a76;
-            box-shadow: 0 5px 0 #c3d2e8, 0 6px 14px rgba(80, 110, 160, 0.15);
+            box-shadow: 0 5px 0 #dae5f2, 0 6px 14px rgba(80, 110, 160, 0.1);
         }
         .btn-copy:hover {
-            background: #dfeaff;
+            background: #e5efff;
             transform: translateY(-2px);
-            box-shadow: 0 7px 0 #c3d2e8, 0 8px 18px rgba(80, 110, 160, 0.2);
+            box-shadow: 0 7px 0 #dae5f2, 0 8px 18px rgba(80, 110, 160, 0.15);
         }
         .btn-copy:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #c3d2e8, 0 4px 12px rgba(80, 110, 160, 0.15);
+            box-shadow: 0 1px 0 #dae5f2, 0 4px 12px rgba(80, 110, 160, 0.1);
         }
         .btn-secondary {
-            background: #f1f4fa;
-            border: 1.5px solid #c6d2e4;
+            background: #f7f9fc;
+            border: 1.5px solid #d9e2ef;
             color: #4a5a78;
-            box-shadow: 0 5px 0 #d5deec, 0 6px 14px rgba(80, 100, 140, 0.12);
+            box-shadow: 0 5px 0 #e6ecf5, 0 6px 14px rgba(80, 100, 140, 0.08);
         }
         .btn-secondary:hover {
-            background: #e8eefb;
+            background: #eef4fb;
             transform: translateY(-2px);
         }
         .btn-secondary:active {
             transform: translateY(4px);
-            box-shadow: 0 1px 0 #d5deec, 0 4px 12px rgba(80, 100, 140, 0.1);
+            box-shadow: 0 1px 0 #e6ecf5, 0 4px 12px rgba(80, 100, 140, 0.08);
         }
         .note {
             font-size: 0.75rem;
@@ -554,7 +540,7 @@
             width: 6px;
         }
         .history-list::-webkit-scrollbar-thumb {
-            background: #c6d2e4;
+            background: #d0dae8;
             border-radius: 10px;
         }
         .history-item {
@@ -562,8 +548,8 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            background: #f6f9ff;
-            border: 1.5px solid #dbe3f0;
+            background: #ffffff;
+            border: 1.5px solid #e0e6f0;
             border-radius: 16px;
             padding: 12px 16px;
             transition: all 0.15s;
@@ -571,7 +557,7 @@
         }
         .history-item:hover {
             border-color: #b7c8e2;
-            background: #eef4ff;
+            background: #f8fbff;
         }
         .history-item-main {
             display: flex;
@@ -585,7 +571,7 @@
             font-size: 0.75rem;
             font-weight: 800;
             color: #ffffff;
-            background: #8fa3c4;
+            background: #a0b3d0;
             border-radius: 10px;
             padding: 4px 10px;
             white-space: nowrap;
@@ -612,24 +598,24 @@
         .mini-btn.restore {
             border-color: #b8d4b8;
             color: #2e7d32;
-            background: #f3fbf3;
+            background: #f5fcf5;
         }
         .mini-btn.restore:hover {
-            background: #e3f5e3;
+            background: #e8f7e8;
         }
         .empty-history {
             color: #8d9bb5;
             font-size: 0.9rem;
             padding: 16px 4px;
             text-align: center;
-            border: 1.5px dashed #dbe3f0;
+            border: 1.5px dashed #e0e6f0;
             border-radius: 16px;
         }
         /* ============ 自定义弹窗 ============ */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(30, 40, 60, 0.4);
+            background: rgba(30, 40, 60, 0.3);
             backdrop-filter: blur(4px);
             display: none;
             align-items: center;
@@ -646,8 +632,8 @@
             padding: 26px 28px;
             width: 100%;
             max-width: 380px;
-            box-shadow: 0 20px 50px -10px rgba(20, 30, 50, 0.4);
-            border: 1px solid #dbe3f0;
+            box-shadow: 0 20px 50px -10px rgba(20, 30, 50, 0.3);
+            border: 1px solid #e0e6f0;
             animation: modalIn 0.18s ease;
         }
         @keyframes modalIn {
@@ -671,8 +657,8 @@
         }
         .modal input {
             width: 100%;
-            background: #f7faff;
-            border: 1.5px solid #ccd7e8;
+            background: #f8fbff;
+            border: 1.5px solid #d9e2ef;
             border-radius: 14px;
             padding: 12px 16px;
             color: #28324a;
@@ -683,7 +669,7 @@
         }
         .modal input:focus {
             border-color: #e0a800;
-            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.25);
+            box-shadow: 0 0 0 3px rgba(255, 200, 60, 0.2);
         }
         .modal-actions {
             display: flex;
@@ -701,38 +687,38 @@
             transition: all 0.15s;
         }
         .modal-btn.cancel {
-            background: #f1f4fa;
-            border: 1.5px solid #c6d2e4;
+            background: #f7f9fc;
+            border: 1.5px solid #d9e2ef;
             color: #4a5a78;
         }
         .modal-btn.cancel:hover {
-            background: #e8eefb;
+            background: #eef4fb;
         }
         .modal-btn.confirm {
             background: linear-gradient(145deg, #ffd966, #f0b34b);
             color: #3d3216;
             border: 1px solid #ffe28c;
-            box-shadow: 0 3px 0 #c9952e;
+            box-shadow: 0 3px 0 #d9b35a;
         }
         .modal-btn.confirm:hover {
             background: linear-gradient(145deg, #ffe082, #f5c05a);
         }
         .modal-btn.confirm:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 #c9952e;
+            box-shadow: 0 1px 0 #d9b35a;
         }
         .modal-btn.danger {
             background: linear-gradient(145deg, #ff9a9a, #e87070);
             color: #ffffff;
             border: 1px solid #ffb8b8;
-            box-shadow: 0 3px 0 #b84a4a;
+            box-shadow: 0 3px 0 #c95a5a;
         }
         .modal-btn.danger:hover {
             background: linear-gradient(145deg, #ffadad, #f07e7e);
         }
         .modal-btn.danger:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 #b84a4a;
+            box-shadow: 0 1px 0 #c95a5a;
         }
         .toast {
             visibility: hidden;
@@ -749,7 +735,7 @@
             transform: translateX(-50%);
             font-size: 0.95rem;
             font-weight: 600;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             opacity: 0;
             transition: opacity 0.3s, visibility 0.3s;
             pointer-events: none;
@@ -779,7 +765,6 @@
             .history-item { padding: 10px 12px; }
             .room-row { padding: 12px 14px; gap: 10px; }
             .room-row-info { display: none; }
-            /* 小屏幕隐藏公式提示 */
             .formula-hint { display: none; }
         }
     </style>
@@ -1525,7 +1510,6 @@
                 }
                 finalValue = Math.round(finalValue * 100) / 100;
 
-                // 构建计算过程文本
                 const sign = (n) => n >= 0 ? `+ ${n}` : `- ${Math.abs(n)}`;
                 let processText = `【娱乐体验玩法 · 本次计算】\n`;
                 processText += `--------------------------------\n`;
