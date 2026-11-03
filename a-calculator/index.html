@@ -20,12 +20,39 @@
             padding: 20px;
             color: #2a3142;
         }
+        /* 返回主页悬浮按钮 */
+        .back-home-btn {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 999;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1.5px solid #d9e2ef;
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1f2a3a;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(31, 42, 58, 0.08);
+            transition: all 0.15s;
+        }
+        .back-home-btn:hover {
+            background: #f8fbff;
+            border-color: #9db3d4;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(31, 42, 58, 0.12);
+        }
         .app {
             width: 100%;
             max-width: 980px;
             display: flex;
             flex-direction: column;
             gap: 16px;
+            margin-top: 20px;
         }
         .page {
             display: none;
@@ -770,6 +797,7 @@
     </style>
 </head>
 <body>
+    <a class="back-home-btn" href="../">← 返回主页</a>
     <div class="app" role="main">
         <!-- ==================== 首页（房间选择） ==================== -->
         <div class="page active" id="homePage">
@@ -1020,24 +1048,20 @@
             const resetBtn = document.getElementById('resetBtn');
             const copyBtn = document.getElementById('copyBtn');
 
-            // 重命名弹窗
             const renameModal = document.getElementById('renameModal');
             const renameInput = document.getElementById('renameInput');
             const renameCancelBtn = document.getElementById('renameCancelBtn');
             const renameConfirmBtn = document.getElementById('renameConfirmBtn');
 
-            // 删除房间弹窗
             const deleteModal = document.getElementById('deleteModal');
             const deleteModalText = document.getElementById('deleteModalText');
             const deleteCancelBtn = document.getElementById('deleteCancelBtn');
             const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
 
-            // 删除历史记录弹窗
             const deleteHistoryModal = document.getElementById('deleteHistoryModal');
             const deleteHistoryCancelBtn = document.getElementById('deleteHistoryCancelBtn');
             const deleteHistoryConfirmBtn = document.getElementById('deleteHistoryConfirmBtn');
 
-            // 重置弹窗
             const resetModal = document.getElementById('resetModal');
             const resetModalText = document.getElementById('resetModalText');
             const resetCancelBtn = document.getElementById('resetCancelBtn');
