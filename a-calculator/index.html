@@ -20,7 +20,6 @@
             padding: 20px;
             color: #2a3142;
         }
-        /* 返回主页悬浮按钮 */
         .back-home-btn {
             position: fixed;
             top: 16px;
@@ -69,7 +68,6 @@
             box-shadow: 0 8px 24px -12px rgba(45, 62, 92, 0.15);
             padding: 22px 26px;
         }
-        /* ============ 首页 ============ */
         .home-header {
             text-align: center;
             margin-bottom: 6px;
@@ -259,7 +257,6 @@
             background: linear-gradient(145deg, #ffe082, #f5c05a);
             box-shadow: 0 4px 0 #d9b35a, 0 6px 16px rgba(220, 170, 40, 0.3);
         }
-        /* ============ 房间页（计算器） ============ */
         .room-page-topbar {
             display: flex;
             align-items: center;
@@ -527,7 +524,6 @@
             letter-spacing: 0.3px;
             line-height: 1.5;
         }
-        /* ============ 历史记录 ============ */
         .history-panel {
             display: flex;
             flex-direction: column;
@@ -638,7 +634,6 @@
             border: 1.5px dashed #e0e6f0;
             border-radius: 16px;
         }
-        /* ============ 自定义弹窗 ============ */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -797,9 +792,8 @@
     </style>
 </head>
 <body>
-    <a class="back-home-btn" href="../">← 返回主页</a>
+    <a class="back-home-btn" href="https://kuromimiyi316.github.io/cc-game/">← 返回主页</a>
     <div class="app" role="main">
-        <!-- ==================== 首页（房间选择） ==================== -->
         <div class="page active" id="homePage">
             <div class="panel">
                 <div class="home-header">
@@ -823,9 +817,7 @@
             </div>
         </div>
 
-        <!-- ==================== 房间页（计算器） ==================== -->
         <div class="page" id="roomPage">
-            <!-- 顶栏：返回 + 房间名（居中） -->
             <div class="panel" style="padding: 16px 22px;">
                 <div class="room-page-topbar">
                     <button class="back-btn" id="backHomeBtn">
@@ -841,7 +833,6 @@
                 </div>
             </div>
 
-            <!-- 计算器 -->
             <div class="calculator">
                 <div class="grid">
                     <div class="input-group">
@@ -900,7 +891,6 @@
                 </div>
             </div>
 
-            <!-- 历史记录 -->
             <div class="panel history-panel">
                 <div class="history-header">
                     <h2>
@@ -913,7 +903,6 @@
         </div>
     </div>
 
-    <!-- 自定义弹窗：重命名 -->
     <div class="modal-overlay" id="renameModal">
         <div class="modal">
             <h3>✏️ 重命名房间</h3>
@@ -925,7 +914,6 @@
         </div>
     </div>
 
-    <!-- 自定义弹窗：确认删除房间 -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal">
             <h3>🗑️ 删除房间</h3>
@@ -937,7 +925,6 @@
         </div>
     </div>
 
-    <!-- 自定义弹窗：确认删除历史记录 -->
     <div class="modal-overlay" id="deleteHistoryModal">
         <div class="modal">
             <h3>🗑️ 删除记录</h3>
@@ -949,7 +936,6 @@
         </div>
     </div>
 
-    <!-- 自定义弹窗：确认重置当前房间 -->
     <div class="modal-overlay" id="resetModal">
         <div class="modal">
             <h3>🔄 重置当前房间</h3>
@@ -961,12 +947,10 @@
         </div>
     </div>
 
-    <!-- 轻提示 -->
     <div id="toast" class="toast">✅ 操作成功</div>
 
     <script>
         (function() {
-            // ============ 存储 ============
             const STORAGE_KEY = 'entertainment_288_rooms_v3';
             const DEFAULT_ROOM_NAME = '房间1';
 
@@ -1010,7 +994,6 @@
                 }
             }
 
-            // ============ 全局状态 ============
             let store = loadStorage();
             if (store.currentRoomId && !store.rooms.some(r => r.id === store.currentRoomId)) {
                 store.currentRoomId = null;
@@ -1020,7 +1003,6 @@
             let deleteTargetRoom = null;
             let deleteHistoryTargetId = null;
 
-            // ============ DOM ============
             const homePage = document.getElementById('homePage');
             const roomPage = document.getElementById('roomPage');
 
@@ -1069,7 +1051,6 @@
 
             const allInputs = [killInput, carryInput, smallGoldInput, smallRedInput, bigRedInput, failInput];
 
-            // ============ 辅助 ============
             function getCurrentRoom() {
                 if (!store.currentRoomId) return null;
                 return store.rooms.find(r => r.id === store.currentRoomId) || null;
@@ -1121,7 +1102,6 @@
                 return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
             }
 
-            // ============ 页面切换 ============
             function showHomePage() {
                 store.currentRoomId = null;
                 saveStorage(store);
@@ -1142,7 +1122,6 @@
                 refreshRoomPage();
             }
 
-            // ============ 首页列表渲染 ============
             function renderHomePage() {
                 roomList.innerHTML = '';
 
@@ -1229,7 +1208,6 @@
                 });
             }
 
-            // ============ 重命名弹窗 ============
             function openRenameModal(room) {
                 renameTargetRoom = room;
                 renameInput.value = room.name;
@@ -1274,7 +1252,6 @@
                 if (e.target === renameModal) closeRenameModal();
             });
 
-            // ============ 删除房间弹窗 ============
             function openDeleteModal(room) {
                 deleteTargetRoom = room;
                 deleteModalText.textContent = `确定删除「${room.name}」吗？该房间的所有计算记录将永久丢失，此操作不可撤销。`;
@@ -1311,7 +1288,6 @@
                 if (e.target === deleteModal) closeDeleteModal();
             });
 
-            // ============ 删除历史记录弹窗 ============
             function openDeleteHistoryModal(historyId) {
                 deleteHistoryTargetId = historyId;
                 deleteHistoryModal.classList.add('show');
@@ -1341,7 +1317,6 @@
                 if (e.target === deleteHistoryModal) closeDeleteHistoryModal();
             });
 
-            // ============ 重置当前房间弹窗 ============
             function openResetModal() {
                 const room = getCurrentRoom();
                 if (!room) return;
@@ -1372,7 +1347,6 @@
                 if (e.target === resetModal) closeResetModal();
             });
 
-            // ============ 创建新房间 ============
             function createNewRoomAndEnter() {
                 let num = store.rooms.length + 1;
                 let name = `房间${num}`;
@@ -1385,7 +1359,6 @@
                 enterRoomPage(newRoom.id);
             }
 
-            // ============ 房间页刷新 ============
             function refreshRoomPage() {
                 const room = getCurrentRoom();
                 if (!room) {
@@ -1432,7 +1405,6 @@
                 return Math.round(value * 100) / 100;
             }
 
-            // ============ 历史渲染 ============
             function renderHistory(room) {
                 historyList.innerHTML = '';
 
@@ -1496,7 +1468,6 @@
                 });
             }
 
-            // ============ 执行计算 ============
             function performCalculation() {
                 const room = getCurrentRoom();
                 if (!room) return;
@@ -1572,7 +1543,6 @@
                 showToast(`✅ ${room.name} 第 ${room.history.length} 次计算：${finalValue} 保底`);
             }
 
-            // ============ 从历史恢复 ============
             function restoreFromHistory(historyItem) {
                 const room = getCurrentRoom();
                 if (!room) return;
@@ -1595,7 +1565,6 @@
                 showToast(`⏪ 已回到第 ${room.history.indexOf(historyItem) + 1} 次结果 (${historyItem.finalValue})，可继续计算`);
             }
 
-            // ============ 复制 ============
             function copyCurrentProcess() {
                 const room = getCurrentRoom();
                 if (!room) return;
@@ -1606,7 +1575,6 @@
                 copyToClipboard(room.lastCalculationSnapshot);
             }
 
-            // ============ 事件绑定 ============
             homeAddRoomBtn.addEventListener('click', createNewRoomAndEnter);
             backHomeBtn.addEventListener('click', showHomePage);
             renameRoomBtn.addEventListener('click', () => {
@@ -1663,7 +1631,6 @@
                 });
             });
 
-            // ============ 初始化 ============
             function init() {
                 store.rooms.forEach(room => {
                     if (!Array.isArray(room.history)) room.history = [];
